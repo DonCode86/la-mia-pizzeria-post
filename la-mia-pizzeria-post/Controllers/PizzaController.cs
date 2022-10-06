@@ -18,8 +18,9 @@ namespace la_mia_pizzeria.Controllers
 
             using (PizzaContext context = new PizzaContext())
             {
+                //MI RECUPERO DAL CONTEXT LA LISTA DELLE PIZZE
                 IQueryable<Pizza> pizzas = context.Pizzas;
-
+                //E LI PASSO ALLA VISTA
                 return View("Index", pizzas.ToList());  
             }
         }
@@ -28,19 +29,22 @@ namespace la_mia_pizzeria.Controllers
         { 
             using (PizzaContext context = new PizzaContext())
             {
+                //FACCIO RICHIESTA DELLE PIZZE ANDANDO A SELEZIONARE LA PIZZA SPECIFICA
+                //pizzaFound e' LINQ (questa e' la method syntax)
                 Pizza pizzaFound = context.Pizzas.Where(pizza => pizza.Id == id).FirstOrDefault();
-
+                //SE IL POST NON VIENE TROVATO
                 if (pizzaFound == null)
                 {
                     return NotFound($"La pizza con id {id} non è stato trovata");
                 }
-                else
+                else //ALTRIMENTI VIENE PASSATO ALLA VISTA DI DETTAGLIO CON PIZZAFOUND
                 {
                     return View("Details", pizzaFound);
                 }
             }
         }
 
+        //QUESTA CREATE E' LA NOSTRA GET CHE PRODUCE IL FORM CHE DOVRA' ESSERE POST
         [HttpGet]
         public IActionResult Create()
         {
@@ -49,7 +53,7 @@ namespace la_mia_pizzeria.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Pizza formData)
+        public IActionResult Create(Pizza formData) //APPENA SALVO PRIMA DI ENTRARE FORMDATA=NEW ECC... INIZIALIZZA L'ISTANZA PER NOI IN AUTOMATICO
         {
             PizzaContext db = new PizzaContext();
 
@@ -60,9 +64,10 @@ namespace la_mia_pizzeria.Controllers
             
             using (PizzaContext context = new PizzaContext())
             {
+                //AGGIUNGO I DATI NEL FORMDATA AL DB E SALVO I CAMBIAMENTI
                 db.Pizzas.Add(formData);
                 db.SaveChanges();
-
+                //RITORNA ALLA LISTA DEI POST
                 return RedirectToAction("Index");
             }
         }

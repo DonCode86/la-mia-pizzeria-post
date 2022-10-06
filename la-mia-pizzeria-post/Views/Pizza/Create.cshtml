@@ -2,7 +2,10 @@
 
 
 <div class="container">
+	@*PREPARIAMO QUESTA FORM FACENDOLA COMBACIARE CON LA CREATE CHE CI ASPETTIAMO DI DOVER USARE*@
+	@*LA ACTION E' UNA URL A CUI IL FORM MANDERA' I DATI CHE HA PREDISPOSTO AL SUO INTERNO*@
 	<form asp-controller="Pizza" asp-action="Create" method="post">
+
 			@Html.AntiForgeryToken()
 		<div class="mb-3">
 			<strong>Nome:</strong>
@@ -16,6 +19,7 @@
 		</div>
 		<div class="mb-3">
 			<strong>Prezzo:</strong>
+			@*usiamo il model come interfaccia per l'input*@
 			<input asp-for="Price" class="d-block w-100" />
 			<span asp-validation-for="Price" class="text-danger"></span>
 		</div>
