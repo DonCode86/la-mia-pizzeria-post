@@ -71,7 +71,37 @@ namespace la_mia_pizzeria.Controllers
                 return RedirectToAction("Index");
             }
         }
-       
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+            PizzaContext pizzaContext = new PizzaContext();
+            Pizza pizza = pizzaContext.Pizzas.Where(pizza=>pizza.Id == id).FirstOrDefault();
+            
+
+            if(pizza == null)
+            {
+                return NotFound("Non trovato");
+            }
+            return View(pizza);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            PizzaContext pizzaContext = new PizzaContext();
+            Pizza pizza = pizzaContext.Pizzas.Where(pizza=> pizza.Id == id).FirstOrDefault();
+
+            if (pizza == null)
+            {
+                return NotFound("Non trovato");
+            }
+            pizzaContext.Pizzas.Remove(pizza);
+            pizzaContext.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
         public IActionResult Privacy()
         {
             return View();
